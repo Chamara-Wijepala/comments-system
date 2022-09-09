@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, provider, db } from "./firebase-config";
-
 import googleLogo from "./assets/google-logo.png";
+
+const commentsRef = collection(db, "comments");
 
 function App() {
   const [user] = useAuthState(auth);
@@ -37,6 +45,8 @@ function App() {
         </article>
 
         <Form />
+
+        <CommentSection />
       </main>
     </>
   );
@@ -85,7 +95,7 @@ function Form() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await addDoc(collection(db, "comments"), {
+    await addDoc(commentsRef, {
       commenter: user?.displayName,
       photo: user?.photoURL,
       body: textInput,
@@ -111,6 +121,49 @@ function Form() {
 
       <button type="submit">Comment</button>
     </form>
+  );
+}
+
+interface Comment {
+  id: string;
+  body: string;
+  commenter: string;
+  createdAt: string;
+  photo: string;
+}
+
+function CommentSection() {
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  const q = query(commentsRef, orderBy("createdAt"));
+
+  useEffect(() => {
+    onSnapshot(q, (snapshot) => {
+      setComments(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          body: doc.data().body,
+          commenter: doc.data().commenter,
+          createdAt: doc.data().createdAt?.toDate().toDateString(),
+          photo: doc.data().photo,
+        }))
+      );
+    });
+  }, []);
+
+  return (
+    <section className="comment-section">
+      {comments?.map((comment) => (
+        <div className="comment" key={comment.id}>
+          <div>
+            <img src={comment.photo} alt="" />
+            <span>{comment.commenter}</span>
+            <span>{comment.createdAt}</span>
+          </div>
+          <p>{comment.body}</p>
+        </div>
+      ))}
+    </section>
   );
 }
 
