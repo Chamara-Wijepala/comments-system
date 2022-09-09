@@ -1,7 +1,35 @@
+import { signInWithPopup, signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import { auth, provider } from "./firebase-config";
+
 function App() {
+  const [user] = useAuthState(auth);
+
   return (
     <>
-      <h1>Hello, World!</h1>
+      <header>
+        {user ? (
+          <div>
+            <img src={user.photoURL!} alt="profile picture" />
+            <button
+              onClick={() => {
+                signOut(auth);
+              }}
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => {
+              signInWithPopup(auth, provider);
+            }}
+          >
+            Sign in with Google
+          </button>
+        )}
+      </header>
     </>
   );
 }
