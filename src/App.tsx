@@ -1,18 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  query,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "./firebase-config";
 import { LogIn, LogOut } from "./components/Authentication";
-
-const commentsRef = collection(db, "comments");
+import { CommentForm } from "./components/CommentForm";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -43,51 +35,11 @@ function App() {
           </p>
         </article>
 
-        <Form />
+        <CommentForm />
 
         <CommentSection />
       </main>
     </>
-  );
-}
-
-function Form() {
-  const [textInput, setTextInput] = useState("");
-  const user = auth.currentUser;
-
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setTextInput(e.target.value);
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    await addDoc(commentsRef, {
-      commenter: user?.displayName,
-      photo: user?.photoURL,
-      body: textInput,
-      createdAt: serverTimestamp(),
-    });
-
-    setTextInput("");
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <textarea
-        cols={30}
-        rows={10}
-        required
-        spellCheck
-        placeholder="Leave a comment..."
-        maxLength={300}
-        value={textInput}
-        onChange={handleChange}
-        disabled={user ? false : true}
-      ></textarea>
-
-      <button type="submit">Comment</button>
-    </form>
   );
 }
 
@@ -102,7 +54,7 @@ interface Comment {
 function CommentSection() {
   const [comments, setComments] = useState<Comment[]>([]);
 
-  const q = query(commentsRef, orderBy("createdAt"));
+  const q = query(collection(db, "comments"), orderBy("createdAt"));
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
