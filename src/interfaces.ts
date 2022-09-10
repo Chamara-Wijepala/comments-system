@@ -5,4 +5,5 @@ export interface IComment {
   docId: string;
   body: string;
   createdAt: string;
+  updatedAt?: string;
 }

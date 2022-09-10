@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "./firebase-config";
@@ -68,6 +61,7 @@ function CommentSection() {
           docId: doc.id,
           body: doc.data().body,
           createdAt: doc.data().createdAt?.toDate().toDateString(),
+          updatedAt: doc.data().updatedAt?.toDate().toDateString(),
         }))
       );
     });
@@ -76,7 +70,7 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <Comment comment={comment} />
+        <Comment key={comment.docId} comment={comment} />
       ))}
     </section>
   );

@@ -114,6 +114,14 @@ svg {
   max-width: 75em;
 }
 
+.opacity-half {
+  opacity: 0.5;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
 /* header */
 
 header {
@@ -201,14 +209,6 @@ header img {
 
 .comment-info > img {
   max-width: 2rem;
-}
-
-.comment-info > .commenter-name {
-  font-weight: bold;
-}
-
-.comment-info > .created-date {
-  opacity: 0.5;
 }
 
 .comment-body {
