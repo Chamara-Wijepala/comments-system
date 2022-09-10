@@ -8,11 +8,11 @@ import { IComment } from "../interfaces";
 function Comment({ comment }: { comment: IComment }) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
 
-  async function handleDelete(commentId: string) {
+  function handleDelete(commentId: string) {
     const result = confirm("Are you sure you want to delete this comment?");
 
     if (result) {
-      await deleteDoc(doc(db, "comments", commentId));
+      deleteDoc(doc(db, "comments", commentId));
     }
   }
 
@@ -84,10 +84,10 @@ function UpdateCommentForm({
     setTextInput(e.target.value);
   }
 
-  async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
+  function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await updateDoc(doc(db, "comments", commentId), {
+    updateDoc(doc(db, "comments", commentId), {
       body: textInput,
       updatedAt: serverTimestamp(),
     });

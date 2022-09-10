@@ -11,10 +11,10 @@ function CreateCommentForm() {
     setTextInput(e.target.value);
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await addDoc(collection(db, "comments"), {
+    addDoc(collection(db, "comments"), {
       userId: user?.uid,
       userName: user?.displayName,
       photo: user?.photoURL,
