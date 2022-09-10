@@ -15,7 +15,8 @@ export function CommentForm() {
     e.preventDefault();
 
     await addDoc(collection(db, "comments"), {
-      commenter: user?.displayName,
+      userId: user?.uid,
+      userName: user?.displayName,
       photo: user?.photoURL,
       body: textInput,
       createdAt: serverTimestamp(),

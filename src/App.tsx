@@ -15,7 +15,6 @@ import { CommentForm } from "./components/CommentForm";
 
 function App() {
   const [user] = useAuthState(auth);
-  console.log(user);
 
   return (
     <>
@@ -52,11 +51,12 @@ function App() {
 }
 
 interface Comment {
-  id: string;
-  body: string;
-  commenter: string;
-  createdAt: string;
+  userId: string;
+  userName: string;
   photo: string;
+  docId: string;
+  body: string;
+  createdAt: string;
 }
 
 function CommentSection() {
@@ -68,11 +68,12 @@ function CommentSection() {
     onSnapshot(q, (snapshot) => {
       setComments(
         snapshot.docs.map((doc) => ({
-          id: doc.id,
-          body: doc.data().body,
-          commenter: doc.data().commenter,
-          createdAt: doc.data().createdAt?.toDate().toDateString(),
+          userId: doc.data().userId,
+          userName: doc.data().userName,
           photo: doc.data().photo,
+          docId: doc.id,
+          body: doc.data().body,
+          createdAt: doc.data().createdAt?.toDate().toDateString(),
         }))
       );
     });
@@ -81,14 +82,16 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <div className="comment-wrapper" key={comment.id}>
+        <div className="comment-wrapper" key={comment.docId}>
           <div className="comment">
             <div className="comment-info">
               <img src={comment.photo} alt="" />
-              <span className="commenter-name">{comment.commenter}</span>
+              <span className="commenter-name">{comment.userName}</span>
               <span className="created-date">{comment.createdAt}</span>
             </div>
+
             <p className="comment-body">{comment.body}</p>
+
             <div className="button-panel">
               <button>Edit</button>
               {}
