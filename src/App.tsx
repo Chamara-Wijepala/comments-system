@@ -21,12 +21,12 @@ function App() {
   return (
     <>
       <header>
-        <div className="container header-container">
+        <div className="container container-lg header-container">
           {user ? <LogOut /> : <LogIn />}
         </div>
       </header>
 
-      <main className="container">
+      <main className="container container-md">
         <article>
           <h2>Article Header</h2>
           <p>

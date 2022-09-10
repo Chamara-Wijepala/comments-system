@@ -79,9 +79,16 @@ svg {
 /* utility classes */
 
 .container {
-  max-width: 75em;
   padding-inline: 1rem;
   margin-inline: auto;
+}
+
+.container-md {
+  max-width: 60em;
+}
+
+.container-lg {
+  max-width: 75em;
 }
 
 /* header */
