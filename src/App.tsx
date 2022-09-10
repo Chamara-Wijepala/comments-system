@@ -11,7 +11,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, provider, db } from "./firebase-config";
-import googleLogo from "./assets/google-logo.png";
+import googleLogo from "./assets/images/google-logo.png";
 
 const commentsRef = collection(db, "comments");
 

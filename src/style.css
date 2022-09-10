@@ -1,7 +1,29 @@
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local(""),
+    url("./assets/fonts/noto-sans-v27-latin-regular.woff2") format("woff2"),
+    url("./assets/fonts/noto-sans-v27-latin-regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  font-style: bold;
+  font-weight: 700;
+  src: local(""),
+    url("./assets/fonts/noto-sans-v27-latin-700.woff2") format("woff2"),
+    url("./assets/fonts/noto-sans-v27-latin-700.woff") format("woff");
+}
+
+/* custom properties */
+
 :root {
   --clr-primary: 0 0% 100%;
   --clr-secondary: 0 0% 98%;
   --clr-accent: 0 100% 71%;
+
+  --ff-noto-sans: "Noto Sans", sans-serif;
 }
 
 /* Edited version of CSS rest by Andy Bell */
@@ -37,6 +59,7 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   background-color: hsl(var(--clr-secondary));
+  font-family: var(--ff-noto-sans);
 }
 
 a:not([class]) {
