@@ -218,3 +218,8 @@ header img {
 .comment-body {
   margin-block: 1rem;
 }
+
+.button-panel {
+  display: flex;
+  column-gap: 1rem;
+}

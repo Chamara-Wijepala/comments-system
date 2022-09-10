@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
 import { db, auth } from "../firebase-config";
 
@@ -7,6 +7,14 @@ import { IComment } from "../interfaces";
 
 function Comment({ comment }: { comment: IComment }) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
+
+  async function handleDelete(commentId: string) {
+    const result = confirm("Are you sure you want to delete this comment?");
+
+    if (result) {
+      await deleteDoc(doc(db, "comments", commentId));
+    }
+  }
 
   return (
     <div className="comment-wrapper">
@@ -35,13 +43,23 @@ function Comment({ comment }: { comment: IComment }) {
 
         <div className="button-panel">
           {comment.userId === auth.currentUser?.uid && (
-            <button
-              onClick={() => {
-                setIsBeingEdited(!isBeingEdited);
-              }}
-            >
-              {isBeingEdited ? "Cancel" : "Edit"}
-            </button>
+            <>
+              <button
+                onClick={() => {
+                  setIsBeingEdited(!isBeingEdited);
+                }}
+              >
+                {isBeingEdited ? "Cancel" : "Edit"}
+              </button>
+
+              <button
+                onClick={() => {
+                  handleDelete(comment.docId);
+                }}
+              >
+                Delete
+              </button>
+            </>
           )}
         </div>
       </div>
