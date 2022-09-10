@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import TextareaAutosize from "react-textarea-autosize";
 
 import { db, auth } from "../firebase-config";
 
@@ -99,17 +100,18 @@ function UpdateCommentForm({
 
   return (
     <form onSubmit={handleUpdate}>
-      <textarea
-        cols={30}
-        rows={10}
-        required
+      <TextareaAutosize
+        minRows={5}
         spellCheck
-        maxLength={300}
+        required
+        maxLength={1000}
         value={textInput}
         onChange={handleChange}
-      ></textarea>
+      />
 
-      <button type="submit">Update</button>
+      <button type="submit" className="btn btn-small">
+        Update
+      </button>
     </form>
   );
 }
