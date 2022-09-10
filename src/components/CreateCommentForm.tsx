@@ -3,7 +3,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { auth, db } from "../firebase-config";
 
-export function CommentForm() {
+function CreateCommentForm() {
   const [textInput, setTextInput] = useState("");
   const user = auth.currentUser;
 
@@ -43,3 +43,5 @@ export function CommentForm() {
     </form>
   );
 }
+
+export default CreateCommentForm;

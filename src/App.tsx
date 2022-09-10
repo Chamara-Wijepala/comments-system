@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "./firebase-config";
 import { LogIn, LogOut } from "./components/Authentication";
-import { CommentForm } from "./components/CommentForm";
+import CreateCommentForm from "./components/CreateCommentForm";
 import Comment from "./components/Comment";
 
 import { IComment } from "./interfaces";
@@ -38,7 +38,7 @@ function App() {
           </p>
         </article>
 
-        <CommentForm />
+        <CreateCommentForm />
 
         <CommentSection />
       </main>
