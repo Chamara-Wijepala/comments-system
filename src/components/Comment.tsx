@@ -45,6 +45,7 @@ function Comment({ comment }: { comment: IComment }) {
           {comment.userId === auth.currentUser?.uid && (
             <>
               <button
+                className="btn btn-small"
                 onClick={() => {
                   setIsBeingEdited(!isBeingEdited);
                 }}
@@ -53,6 +54,7 @@ function Comment({ comment }: { comment: IComment }) {
               </button>
 
               <button
+                className="btn btn-small delete-btn"
                 onClick={() => {
                   handleDelete(comment.docId);
                 }}
