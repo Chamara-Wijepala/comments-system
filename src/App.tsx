@@ -154,13 +154,15 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <div className="comment" key={comment.id}>
-          <div>
-            <img src={comment.photo} alt="" />
-            <span>{comment.commenter}</span>
-            <span>{comment.createdAt}</span>
+        <div className="comment-wrapper">
+          <div className="comment" key={comment.id}>
+            <div className="comment-info">
+              <img src={comment.photo} alt="" />
+              <span>{comment.commenter}</span>
+              <span>{comment.createdAt}</span>
+            </div>
+            <p className="comment-body">{comment.body}</p>
           </div>
-          <p>{comment.body}</p>
         </div>
       ))}
     </section>
