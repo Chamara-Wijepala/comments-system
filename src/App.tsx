@@ -12,6 +12,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase-config";
 import { LogIn, LogOut } from "./components/Authentication";
 import { CommentForm } from "./components/CommentForm";
+import Comment from "./components/Comment";
+
+import { IComment } from "./interfaces";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -50,17 +53,8 @@ function App() {
   );
 }
 
-interface Comment {
-  userId: string;
-  userName: string;
-  photo: string;
-  docId: string;
-  body: string;
-  createdAt: string;
-}
-
 function CommentSection() {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
 
   const q = query(collection(db, "comments"), orderBy("createdAt"));
 
@@ -82,22 +76,7 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <div className="comment-wrapper" key={comment.docId}>
-          <div className="comment">
-            <div className="comment-info">
-              <img src={comment.photo} alt="" />
-              <span className="commenter-name">{comment.userName}</span>
-              <span className="created-date">{comment.createdAt}</span>
-            </div>
-
-            <p className="comment-body">{comment.body}</p>
-
-            <div className="button-panel">
-              <button>Edit</button>
-              {}
-            </div>
-          </div>
-        </div>
+        <Comment comment={comment} />
       ))}
     </section>
   );
