@@ -14,7 +14,7 @@ function Comment({ comment }: { comment: IComment }) {
         <div className="comment-info">
           <img src={comment.photo} alt="" />
           <span className="fw-bold">{comment.userName}</span>
-          <span className="opacity-half">
+          <span className="date opacity-half">
             {comment.updatedAt
               ? `Edited ${comment.updatedAt}`
               : comment.createdAt}
