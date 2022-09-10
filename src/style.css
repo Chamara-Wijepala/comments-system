@@ -203,6 +203,14 @@ header img {
   max-width: 2rem;
 }
 
+.comment-info > .commenter-name {
+  font-weight: bold;
+}
+
+.comment-info > .created-date {
+  opacity: 0.5;
+}
+
 .comment-body {
   margin-block: 1rem;
 }

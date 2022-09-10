@@ -158,8 +158,8 @@ function CommentSection() {
           <div className="comment" key={comment.id}>
             <div className="comment-info">
               <img src={comment.photo} alt="" />
-              <span>{comment.commenter}</span>
-              <span>{comment.createdAt}</span>
+              <span className="commenter-name">{comment.commenter}</span>
+              <span className="created-date">{comment.createdAt}</span>
             </div>
             <p className="comment-body">{comment.body}</p>
           </div>
