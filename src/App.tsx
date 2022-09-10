@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { signInWithPopup, signOut } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -10,8 +9,8 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { auth, provider, db } from "./firebase-config";
-import googleLogo from "./assets/images/google-logo.png";
+import { auth, db } from "./firebase-config";
+import { LogIn, LogOut } from "./components/Authentication";
 
 const commentsRef = collection(db, "comments");
 
@@ -49,38 +48,6 @@ function App() {
         <CommentSection />
       </main>
     </>
-  );
-}
-
-function LogOut() {
-  const photo = auth.currentUser?.photoURL;
-
-  return (
-    <>
-      <img src={photo!} alt="profile picture" />
-      <button
-        className="btn"
-        onClick={() => {
-          signOut(auth);
-        }}
-      >
-        Sign out
-      </button>
-    </>
-  );
-}
-
-function LogIn() {
-  return (
-    <button
-      className="btn login-with-google-btn"
-      onClick={() => {
-        signInWithPopup(auth, provider);
-      }}
-    >
-      <img src={googleLogo} alt="google logo" />
-      Sign in with Google
-    </button>
   );
 }
 
