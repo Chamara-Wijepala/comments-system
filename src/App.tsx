@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "./firebase-config";
@@ -8,6 +15,7 @@ import { CommentForm } from "./components/CommentForm";
 
 function App() {
   const [user] = useAuthState(auth);
+  console.log(user);
 
   return (
     <>
@@ -73,14 +81,18 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <div className="comment-wrapper">
-          <div className="comment" key={comment.id}>
+        <div className="comment-wrapper" key={comment.id}>
+          <div className="comment">
             <div className="comment-info">
               <img src={comment.photo} alt="" />
               <span className="commenter-name">{comment.commenter}</span>
               <span className="created-date">{comment.createdAt}</span>
             </div>
             <p className="comment-body">{comment.body}</p>
+            <div className="button-panel">
+              <button>Edit</button>
+              {}
+            </div>
           </div>
         </div>
       ))}
