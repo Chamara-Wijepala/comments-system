@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 import { auth, db } from "./firebase-config";
 import { LogIn, LogOut } from "./components/Authentication";
@@ -10,7 +10,15 @@ import Comment from "./components/Comment";
 import { IComment } from "./interfaces";
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [user, setUser] = useState<User | null>(null);
+
+  // wrapping the onAuthStateChanged in a useEffect will prevent user state
+  // from being set twice
+  useEffect(() => {
+    onAuthStateChanged(auth, (userObj) => {
+      setUser(userObj ? userObj : null);
+    });
+  }, []);
 
   return (
     <>
