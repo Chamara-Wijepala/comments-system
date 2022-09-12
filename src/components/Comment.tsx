@@ -90,10 +90,12 @@ function UpdateCommentForm({
   function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    updateDoc(doc(db, "comments", commentId), {
-      body: textInput,
-      updatedAt: serverTimestamp(),
-    });
+    if (textInput !== commentToUpdate) {
+      updateDoc(doc(db, "comments", commentId), {
+        body: textInput,
+        updatedAt: serverTimestamp(),
+      });
+    }
 
     setIsBeingEdited(false);
   }
