@@ -21,7 +21,7 @@ function Comment({ comment }: { comment: IComment }) {
     <div className="comment-wrapper">
       <div className="comment">
         <div className="comment-info">
-          <img src={comment.photo} alt="" />
+          <img src={comment.photo} alt="" className="profile-picture" />
           <span className="fw-bold">{comment.userName}</span>
           <span className="date opacity-half">
             {comment.updatedAt

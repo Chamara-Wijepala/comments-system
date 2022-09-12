@@ -8,7 +8,7 @@ export function LogOut() {
 
   return (
     <>
-      <img src={photo!} alt="profile picture" />
+      <img src={photo!} alt="profile picture" className="profile-picture" />
       <button
         className="btn"
         onClick={() => {

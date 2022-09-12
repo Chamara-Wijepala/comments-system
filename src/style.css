@@ -122,7 +122,7 @@ svg {
   font-weight: bold;
 }
 
-/* general styles */
+/* component styles */
 
 /* google login button by Mirko Akov */
 /* https://codepen.io/mupkoo/pen/YgddgB */
@@ -178,16 +178,19 @@ textarea {
   border: 1px solid hsl(0 0% 0% / 0.2);
 }
 
+.profile-picture {
+  max-width: 2rem;
+  border-radius: 50%;
+}
+
+/* general styles */
+
 /* header */
 
 header {
   background-color: hsl(var(--clr-primary));
   box-shadow: hsl(0 0% 0% / 0.2) 0px 1px 2px 0px;
   padding-block: 1rem;
-}
-
-header img {
-  max-width: 2rem;
 }
 
 .header-container {
@@ -226,10 +229,6 @@ header img {
   display: flex;
   align-items: center;
   column-gap: 1rem;
-}
-
-.comment-info > img {
-  max-width: 2rem;
 }
 
 .comment-info > .date {
