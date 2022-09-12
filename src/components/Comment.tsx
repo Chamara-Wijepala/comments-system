@@ -101,7 +101,6 @@ function UpdateCommentForm({
   return (
     <form onSubmit={handleUpdate}>
       <TextareaAutosize
-        minRows={5}
         spellCheck
         required
         maxLength={1000}
