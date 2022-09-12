@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import TextareaAutosize from "react-textarea-autosize";
 
 import { db, auth } from "../firebase-config";
@@ -8,6 +15,7 @@ import { IComment } from "../interfaces";
 
 function Comment({ comment }: { comment: IComment }) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
+  const [isBeingRepliedTo, setIsBeingRepliedTo] = useState(false);
 
   function handleDelete(commentId: string) {
     const result = confirm("Are you sure you want to delete this comment?");
@@ -18,54 +26,78 @@ function Comment({ comment }: { comment: IComment }) {
   }
 
   return (
-    <div className="comment-wrapper">
-      <div className="comment">
-        <div className="comment-info">
-          <img src={comment.photo} alt="" className="profile-picture" />
-          <span className="fw-bold">{comment.userName}</span>
-          <span className="date opacity-half">
-            {comment.updatedAt
-              ? `Edited ${comment.updatedAt}`
-              : comment.createdAt}
-          </span>
-        </div>
+    <div>
+      <div className="comment-top-border">
+        <div className="comment">
+          <div className="comment-info">
+            <img src={comment.photo} alt="" className="profile-picture" />
 
-        <div className="comment-body">
-          {isBeingEdited && auth.currentUser ? (
-            <UpdateCommentForm
-              commentToUpdate={comment.body}
-              commentId={comment.docId}
-              setIsBeingEdited={setIsBeingEdited}
-            />
-          ) : (
-            <p>{comment.body}</p>
-          )}
-        </div>
+            <span className="fw-bold">{comment.userName}</span>
 
-        <div className="button-panel">
-          {comment.userId === auth.currentUser?.uid && (
-            <>
+            <span className="date opacity-half">
+              {comment.updatedAt
+                ? `Edited ${comment.updatedAt}`
+                : comment.createdAt}
+            </span>
+          </div>
+
+          <div className="comment-body">
+            {isBeingEdited && auth.currentUser ? (
+              <UpdateCommentForm
+                commentToUpdate={comment.body}
+                commentId={comment.docId}
+                setIsBeingEdited={setIsBeingEdited}
+              />
+            ) : (
+              <p>{comment.body}</p>
+            )}
+          </div>
+
+          <div className="button-panel">
+            {auth.currentUser && (
               <button
                 className="btn btn-small"
                 onClick={() => {
-                  setIsBeingEdited(!isBeingEdited);
+                  setIsBeingRepliedTo(!isBeingRepliedTo);
                 }}
+                disabled={isBeingEdited ? true : false}
               >
-                {isBeingEdited ? "Cancel" : "Edit"}
+                {isBeingRepliedTo ? "Cancel" : "Reply"}
               </button>
+            )}
 
-              <button
-                className="btn btn-small delete-btn"
-                onClick={() => {
-                  handleDelete(comment.docId);
-                }}
-              >
-                Delete
-              </button>
-            </>
-          )}
+            {comment.userId === auth.currentUser?.uid && (
+              <>
+                <button
+                  className="btn btn-small"
+                  onClick={() => {
+                    setIsBeingEdited(!isBeingEdited);
+                  }}
+                  disabled={isBeingRepliedTo ? true : false}
+                >
+                  {isBeingEdited ? "Cancel" : "Edit"}
+                </button>
+
+                <button
+                  className="btn btn-small delete-btn"
+                  onClick={() => {
+                    handleDelete(comment.docId);
+                  }}
+                  disabled={isBeingRepliedTo || isBeingEdited ? true : false}
+                >
+                  Delete
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
+      {isBeingRepliedTo && (
+        <ReplyToCommentForm
+          commentId={comment.docId}
+          setIsBeingRepliedTo={setIsBeingRepliedTo}
+        />
+      )}
     </div>
   );
 }
@@ -114,6 +146,55 @@ function UpdateCommentForm({
         Update
       </button>
     </form>
+  );
+}
+
+interface ReplyToCommentFormProps {
+  commentId: string;
+  setIsBeingRepliedTo: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ReplyToCommentForm({
+  commentId,
+  setIsBeingRepliedTo,
+}: ReplyToCommentFormProps) {
+  const [textInput, setTextInput] = useState("");
+
+  const user = auth.currentUser;
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    addDoc(collection(db, "comments", commentId, "replies"), {
+      userId: user?.uid,
+      userName: user?.displayName,
+      photo: user?.photoURL,
+      body: textInput,
+      createdAt: serverTimestamp(),
+    });
+
+    setIsBeingRepliedTo(false);
+  }
+
+  return (
+    <div className="nested-component">
+      <form onSubmit={handleSubmit}>
+        <TextareaAutosize
+          minRows={5}
+          spellCheck
+          required
+          maxLength={1000}
+          value={textInput}
+          onChange={(e) => {
+            setTextInput(e.target.value);
+          }}
+        />
+
+        <button type="submit" className="btn btn-small">
+          Reply
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -122,6 +122,10 @@ svg {
   font-weight: bold;
 }
 
+.minw-100 {
+  min-width: 100%;
+}
+
 /* component styles */
 
 /* google login button by Mirko Akov */
@@ -169,9 +173,13 @@ svg {
   padding: 4px 6px;
 }
 
+form,
 textarea {
   min-width: 100%;
   max-width: 100%;
+}
+
+textarea {
   padding: 0.5rem;
   margin-block: 1rem;
   border-radius: 5px;
@@ -181,6 +189,27 @@ textarea {
 .profile-picture {
   max-width: 2rem;
   border-radius: 50%;
+}
+
+.nested-component {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  margin-top: 1.5rem;
+}
+
+.nested-component::before {
+  content: "";
+  width: 2px;
+  height: 100%;
+  margin-inline: 1rem;
+  background-color: black;
+  opacity: 0.2;
+}
+
+@media (min-width: 35em) {
+  .nested-component::before {
+    margin-inline: 1.5rem;
+  }
 }
 
 /* general styles */
@@ -223,7 +252,7 @@ header {
 
 /* comments */
 
-.comment-wrapper {
+.comment-top-border {
   padding-top: 6px;
   background-color: hsl(var(--clr-accent));
   border-radius: 8px;
