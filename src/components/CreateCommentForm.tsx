@@ -28,24 +28,26 @@ function CreateCommentForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextareaAutosize
-        minRows={5}
-        spellCheck
-        required
-        placeholder="Leave a comment..."
-        maxLength={1000}
-        value={textInput}
-        onChange={handleChange}
-        disabled={user ? false : true}
-      />
+      <div className="create-comment-form-wrapper">
+        <TextareaAutosize
+          minRows={5}
+          spellCheck
+          required
+          placeholder="Leave a comment..."
+          maxLength={1000}
+          value={textInput}
+          onChange={handleChange}
+          disabled={user ? false : true}
+        />
 
-      <button
-        type="submit"
-        className="btn btn-small"
-        disabled={user ? false : true}
-      >
-        Post
-      </button>
+        <button
+          type="submit"
+          className="btn btn-small"
+          disabled={user ? false : true}
+        >
+          Post
+        </button>
+      </div>
     </form>
   );
 }

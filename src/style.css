@@ -200,6 +200,18 @@ header {
   gap: 1rem;
 }
 
+/* create comment form */
+
+.create-comment-form-wrapper {
+  padding-inline: 0;
+}
+
+@media (min-width: 35em) {
+  .create-comment-form-wrapper {
+    padding-inline: 4rem;
+  }
+}
+
 /* comment section */
 
 .comment-section {
