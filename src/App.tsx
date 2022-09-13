@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
 
-import { auth, db } from "./firebase-config";
-import { LogIn, LogOut } from "./components/Authentication";
-import CreateCommentForm from "./components/CreateCommentForm";
-import Comment from "./components/Comment";
+import { auth, db } from "firebase-config";
+import { LogIn, LogOut } from "components/Authentication";
+import CreateCommentForm from "components/CreateCommentForm";
+import Comment from "components/Comment";
 
-import { IComment } from "./interfaces";
+import { IComment } from "interfaces";
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
