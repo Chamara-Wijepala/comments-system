@@ -10,11 +10,11 @@ import TextareaAutosize from "react-textarea-autosize";
 import { auth } from "firebase-config";
 
 interface Props {
-  colRef: CollectionReference<DocumentData>;
+  repliesColRef: CollectionReference<DocumentData>;
   setIsBeingRepliedTo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ReplyToCommentForm({ colRef, setIsBeingRepliedTo }: Props) {
+function ReplyToCommentForm({ repliesColRef, setIsBeingRepliedTo }: Props) {
   const [textInput, setTextInput] = useState("");
 
   const user = auth.currentUser;
@@ -22,7 +22,7 @@ function ReplyToCommentForm({ colRef, setIsBeingRepliedTo }: Props) {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    addDoc(colRef, {
+    addDoc(repliesColRef, {
       userId: user?.uid,
       userName: user?.displayName,
       photo: user?.photoURL,

@@ -1,5 +1,15 @@
-import { useState } from "react";
-import { collection, doc, deleteDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import {
+  collection,
+  doc,
+  deleteDoc,
+  query,
+  onSnapshot,
+  orderBy,
+  DocumentReference,
+  DocumentData,
+  CollectionReference,
+} from "firebase/firestore";
 
 import UpdateCommentForm from "./UpdateCommentForm";
 import ReplyToCommentForm from "./ReplyToCommentForm";
@@ -8,24 +18,80 @@ import { db, auth } from "firebase-config";
 
 import { IComment } from "interfaces";
 
-function Comment({ comment }: { comment: IComment }) {
+function RenderComment({ comment }: { comment: IComment }) {
+  const [replies, setReplies] = useState<IComment[] | null>(null);
+
+  const commentDocRef = doc(db, "comments", comment.docId);
+  const repliesColRef = collection(db, "comments", comment.docId, "replies");
+
+  const q = query(repliesColRef, orderBy("createdAt"));
+
+  useEffect(() => {
+    onSnapshot(q, (snapshot) => {
+      setReplies(
+        snapshot.docs.map((doc) => ({
+          userId: doc.data().userId,
+          userName: doc.data().userName,
+          photo: doc.data().photo,
+          docId: doc.id,
+          body: doc.data().body,
+          createdAt: doc.data().createdAt?.toDate().toDateString(),
+          updatedAt: doc.data().updatedAt?.toDate().toDateString(),
+        }))
+      );
+    });
+  }, []);
+
+  return (
+    <div className="parent-comment">
+      <Comment
+        comment={comment}
+        commentDocRef={commentDocRef}
+        repliesColRef={repliesColRef}
+      />
+      <>
+        {replies &&
+          replies.map((reply) => (
+            <div key={reply.docId} className="nested-component">
+              <Comment
+                comment={reply}
+                commentDocRef={doc(
+                  db,
+                  "comments",
+                  comment.docId,
+                  "replies",
+                  reply.docId
+                )}
+                repliesColRef={repliesColRef}
+              />
+            </div>
+          ))}
+      </>
+    </div>
+  );
+}
+
+interface CommentProps {
+  comment: IComment;
+  commentDocRef: DocumentReference<DocumentData>;
+  repliesColRef: CollectionReference<DocumentData>;
+}
+
+function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isBeingRepliedTo, setIsBeingRepliedTo] = useState(false);
 
-  const docRef = doc(db, "comments", comment.docId);
-  const colRef = collection(db, "comments", comment.docId, "replies");
-
-  function handleDelete(commentId: string) {
+  function handleDelete(commentDocRef: DocumentReference<DocumentData>) {
     const result = confirm("Are you sure you want to delete this comment?");
 
     if (result) {
-      deleteDoc(doc(db, "comments", commentId));
+      deleteDoc(commentDocRef);
     }
   }
 
   return (
-    <div className="comment-container">
-      <div className="comment-top-border">
+    <div>
+      <div className="comment-container">
         <div className="comment">
           <div className="comment-info">
             <img src={comment.photo} alt="" className="profile-picture" />
@@ -43,7 +109,7 @@ function Comment({ comment }: { comment: IComment }) {
             {isBeingEdited && auth.currentUser ? (
               <UpdateCommentForm
                 commentToUpdate={comment.body}
-                docRef={docRef}
+                commentDocRef={commentDocRef}
                 setIsBeingEdited={setIsBeingEdited}
               />
             ) : (
@@ -79,7 +145,7 @@ function Comment({ comment }: { comment: IComment }) {
                 <button
                   className="btn btn-small delete-btn"
                   onClick={() => {
-                    handleDelete(comment.docId);
+                    handleDelete(commentDocRef);
                   }}
                   disabled={isBeingRepliedTo || isBeingEdited ? true : false}
                 >
@@ -92,7 +158,7 @@ function Comment({ comment }: { comment: IComment }) {
       </div>
       {isBeingRepliedTo && (
         <ReplyToCommentForm
-          colRef={colRef}
+          repliesColRef={repliesColRef}
           setIsBeingRepliedTo={setIsBeingRepliedTo}
         />
       )}
@@ -100,4 +166,4 @@ function Comment({ comment }: { comment: IComment }) {
   );
 }
 
-export default Comment;
+export default RenderComment;

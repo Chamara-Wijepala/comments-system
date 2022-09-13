@@ -5,7 +5,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "firebase-config";
 import { LogIn, LogOut } from "components/Authentication";
 import CreateCommentForm from "components/CreateCommentForm";
-import Comment from "components/Comment";
+import RenderComment from "components/RenderComment";
 
 import { IComment } from "interfaces";
 
@@ -70,6 +70,7 @@ function CommentSection() {
           body: doc.data().body,
           createdAt: doc.data().createdAt?.toDate().toDateString(),
           updatedAt: doc.data().updatedAt?.toDate().toDateString(),
+          replies: doc.data().replies,
         }))
       );
     });
@@ -78,7 +79,7 @@ function CommentSection() {
   return (
     <section className="comment-section">
       {comments?.map((comment) => (
-        <Comment key={comment.docId} comment={comment} />
+        <RenderComment key={comment.docId} comment={comment} />
       ))}
     </section>
   );

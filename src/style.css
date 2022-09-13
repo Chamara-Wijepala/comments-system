@@ -194,7 +194,6 @@ textarea {
 .nested-component {
   display: grid;
   grid-template-columns: min-content 1fr;
-  margin-top: 1.5rem;
 }
 
 .nested-component::before {
@@ -246,14 +245,14 @@ header {
 .comment-section {
   padding-block: 1.5rem;
   display: grid;
-  row-gap: 1.5rem;
   grid-template-columns: minmax(0, 1fr);
 }
 
 /* comments */
 
-.comment-top-border {
+.comment-container {
   padding-top: 6px;
+  margin-block: 1rem;
   background-color: hsl(var(--clr-accent));
   border-radius: 8px;
 }

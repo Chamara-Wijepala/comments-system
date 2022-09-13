@@ -1,3 +1,5 @@
+import { CollectionReference } from "firebase/firestore";
+
 export interface IComment {
   userId: string;
   userName: string;
@@ -6,4 +8,5 @@ export interface IComment {
   body: string;
   createdAt: string;
   updatedAt?: string;
+  replies?: CollectionReference;
 }

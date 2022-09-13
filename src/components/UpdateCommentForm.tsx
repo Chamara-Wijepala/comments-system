@@ -9,13 +9,13 @@ import TextareaAutosize from "react-textarea-autosize";
 
 interface Props {
   commentToUpdate: string;
-  docRef: DocumentReference<DocumentData>;
+  commentDocRef: DocumentReference<DocumentData>;
   setIsBeingEdited: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function UpdateCommentForm({
   commentToUpdate,
-  docRef,
+  commentDocRef,
   setIsBeingEdited,
 }: Props) {
   const [textInput, setTextInput] = useState(commentToUpdate);
@@ -24,7 +24,7 @@ function UpdateCommentForm({
     e.preventDefault();
 
     if (textInput !== commentToUpdate) {
-      updateDoc(docRef, {
+      updateDoc(commentDocRef, {
         body: textInput,
         updatedAt: serverTimestamp(),
       });
