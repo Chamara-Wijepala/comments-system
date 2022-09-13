@@ -10,6 +10,9 @@ import {
   DocumentData,
   CollectionReference,
 } from "firebase/firestore";
+import { FaEdit } from "react-icons/fa";
+import { BsReplyFill } from "react-icons/bs";
+import { AiFillDelete } from "react-icons/ai";
 
 import UpdateCommentForm from "./UpdateCommentForm";
 import ReplyToCommentForm from "./ReplyToCommentForm";
@@ -133,7 +136,13 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
                 }}
                 disabled={isBeingEdited ? true : false}
               >
-                {isBeingRepliedTo ? "Cancel" : "Reply"}
+                {isBeingRepliedTo ? (
+                  "Cancel"
+                ) : (
+                  <span>
+                    <BsReplyFill /> Reply
+                  </span>
+                )}
               </button>
             )}
 
@@ -146,7 +155,13 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
                   }}
                   disabled={isBeingRepliedTo ? true : false}
                 >
-                  {isBeingEdited ? "Cancel" : "Edit"}
+                  {isBeingEdited ? (
+                    "Cancel"
+                  ) : (
+                    <span>
+                      <FaEdit /> Edit
+                    </span>
+                  )}
                 </button>
 
                 <button
@@ -156,6 +171,7 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
                   }}
                   disabled={isBeingRepliedTo || isBeingEdited ? true : false}
                 >
+                  <AiFillDelete />
                   Delete
                 </button>
               </>

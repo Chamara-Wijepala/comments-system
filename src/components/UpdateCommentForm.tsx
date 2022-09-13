@@ -6,6 +6,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import TextareaAutosize from "react-textarea-autosize";
+import { FaEdit } from "react-icons/fa";
 
 interface Props {
   commentToUpdate: string;
@@ -46,7 +47,7 @@ function UpdateCommentForm({
       />
 
       <button type="submit" className="btn btn-small">
-        Update
+        <FaEdit /> Update
       </button>
     </form>
   );

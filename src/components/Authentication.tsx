@@ -1,7 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
+import { FcGoogle } from "react-icons/fc";
 
 import { auth, provider } from "../firebase-config";
-import googleLogo from "../assets/images/google-logo.png";
 
 export function LogOut() {
   const photo = auth.currentUser?.photoURL;
@@ -29,8 +29,7 @@ export function LogIn() {
         signInWithPopup(auth, provider);
       }}
     >
-      <img src={googleLogo} alt="google logo" />
-      Sign in with Google
+      <FcGoogle /> Sign in with Google
     </button>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import TextareaAutosize from "react-textarea-autosize";
+import { MdComment } from "react-icons/md";
 
 import { auth, db } from "../firebase-config";
 
@@ -45,7 +46,7 @@ function CreateCommentForm() {
           className="btn btn-small"
           disabled={user ? false : true}
         >
-          Post
+          <MdComment /> Post
         </button>
       </div>
     </form>

@@ -6,6 +6,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import TextareaAutosize from "react-textarea-autosize";
+import { BsReplyFill } from "react-icons/bs";
 
 import { auth } from "firebase-config";
 
@@ -48,7 +49,7 @@ function ReplyToCommentForm({ repliesColRef, setIsBeingRepliedTo }: Props) {
         />
 
         <button type="submit" className="btn btn-small">
-          Reply
+          <BsReplyFill /> Reply
         </button>
       </form>
     </div>
