@@ -1,21 +1,19 @@
 import { useState } from "react";
-import {
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-import TextareaAutosize from "react-textarea-autosize";
+import { collection, doc, deleteDoc } from "firebase/firestore";
 
-import { db, auth } from "../firebase-config";
+import UpdateCommentForm from "./UpdateCommentForm";
+import ReplyToCommentForm from "./ReplyToCommentForm";
 
-import { IComment } from "../interfaces";
+import { db, auth } from "firebase-config";
+
+import { IComment } from "interfaces";
 
 function Comment({ comment }: { comment: IComment }) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isBeingRepliedTo, setIsBeingRepliedTo] = useState(false);
+
+  const docRef = doc(db, "comments", comment.docId);
+  const colRef = collection(db, "comments", comment.docId, "replies");
 
   function handleDelete(commentId: string) {
     const result = confirm("Are you sure you want to delete this comment?");
@@ -26,7 +24,7 @@ function Comment({ comment }: { comment: IComment }) {
   }
 
   return (
-    <div>
+    <div className="comment-container">
       <div className="comment-top-border">
         <div className="comment">
           <div className="comment-info">
@@ -45,7 +43,7 @@ function Comment({ comment }: { comment: IComment }) {
             {isBeingEdited && auth.currentUser ? (
               <UpdateCommentForm
                 commentToUpdate={comment.body}
-                commentId={comment.docId}
+                docRef={docRef}
                 setIsBeingEdited={setIsBeingEdited}
               />
             ) : (
@@ -94,106 +92,10 @@ function Comment({ comment }: { comment: IComment }) {
       </div>
       {isBeingRepliedTo && (
         <ReplyToCommentForm
-          commentId={comment.docId}
+          colRef={colRef}
           setIsBeingRepliedTo={setIsBeingRepliedTo}
         />
       )}
-    </div>
-  );
-}
-
-interface UpdateCommentFormProps {
-  commentToUpdate: string;
-  commentId: string;
-  setIsBeingEdited: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function UpdateCommentForm({
-  commentToUpdate,
-  commentId,
-  setIsBeingEdited,
-}: UpdateCommentFormProps) {
-  const [textInput, setTextInput] = useState(commentToUpdate);
-
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setTextInput(e.target.value);
-  }
-
-  function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (textInput !== commentToUpdate) {
-      updateDoc(doc(db, "comments", commentId), {
-        body: textInput,
-        updatedAt: serverTimestamp(),
-      });
-    }
-
-    setIsBeingEdited(false);
-  }
-
-  return (
-    <form onSubmit={handleUpdate}>
-      <TextareaAutosize
-        spellCheck
-        required
-        maxLength={1000}
-        value={textInput}
-        onChange={handleChange}
-      />
-
-      <button type="submit" className="btn btn-small">
-        Update
-      </button>
-    </form>
-  );
-}
-
-interface ReplyToCommentFormProps {
-  commentId: string;
-  setIsBeingRepliedTo: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function ReplyToCommentForm({
-  commentId,
-  setIsBeingRepliedTo,
-}: ReplyToCommentFormProps) {
-  const [textInput, setTextInput] = useState("");
-
-  const user = auth.currentUser;
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    addDoc(collection(db, "comments", commentId, "replies"), {
-      userId: user?.uid,
-      userName: user?.displayName,
-      photo: user?.photoURL,
-      body: textInput,
-      createdAt: serverTimestamp(),
-    });
-
-    setIsBeingRepliedTo(false);
-  }
-
-  return (
-    <div className="nested-component">
-      <form onSubmit={handleSubmit}>
-        <TextareaAutosize
-          minRows={5}
-          spellCheck
-          required
-          maxLength={1000}
-          value={textInput}
-          onChange={(e) => {
-            setTextInput(e.target.value);
-          }}
-        />
-
-        <button type="submit" className="btn btn-small">
-          Reply
-        </button>
-      </form>
     </div>
   );
 }
