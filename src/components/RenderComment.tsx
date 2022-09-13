@@ -91,7 +91,14 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
 
   return (
     <div>
-      <div className="comment-container">
+      <div
+        className={
+          "comment-container " +
+          (comment.userId === "t46mSh1qYHgS6gGvffLKF7jCeTI3"
+            ? "admin"
+            : "regular")
+        }
+      >
         <div className="comment">
           <div className="comment-info">
             <img src={comment.photo} alt="" className="profile-picture" />

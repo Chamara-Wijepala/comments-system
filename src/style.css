@@ -21,7 +21,8 @@
 :root {
   --clr-primary: 0 0% 100%;
   --clr-secondary: 0 0% 98%;
-  --clr-accent: 0 100% 71%;
+  --clr-accent-400: 0 100% 71%;
+  --clr-accent-300: 186 72% 65%;
 
   --ff-noto-sans: "Noto Sans", sans-serif;
 }
@@ -253,8 +254,15 @@ header {
 .comment-container {
   padding-top: 6px;
   margin-block: 1rem;
-  background-color: hsl(var(--clr-accent));
   border-radius: 8px;
+}
+
+.comment-container.regular {
+  background-color: hsl(var(--clr-accent-400));
+}
+
+.comment-container.admin {
+  background-color: hsl(var(--clr-accent-300));
 }
 
 .comment {
@@ -286,6 +294,6 @@ header {
 
 .delete-btn {
   color: black;
-  background-color: hsl(var(--clr-accent));
+  background-color: hsl(var(--clr-accent-400));
   margin-left: auto;
 }
