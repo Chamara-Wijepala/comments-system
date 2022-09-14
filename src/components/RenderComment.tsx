@@ -18,6 +18,7 @@ import UpdateCommentForm from "./UpdateCommentForm";
 import ReplyToCommentForm from "./ReplyToCommentForm";
 
 import { db, auth } from "firebase-config";
+import processSnapshot from "utils/processSnapshot";
 
 import { IComment } from "interfaces";
 
@@ -31,17 +32,7 @@ function RenderComment({ comment }: { comment: IComment }) {
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
-      setReplies(
-        snapshot.docs.map((doc) => ({
-          userId: doc.data().userId,
-          userName: doc.data().userName,
-          photo: doc.data().photo,
-          docId: doc.id,
-          body: doc.data().body,
-          createdAt: doc.data().createdAt?.toDate().toDateString(),
-          updatedAt: doc.data().updatedAt?.toDate().toDateString(),
-        }))
-      );
+      setReplies(processSnapshot(snapshot));
     });
   }, []);
 

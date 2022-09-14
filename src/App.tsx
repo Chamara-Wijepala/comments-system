@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  QuerySnapshot,
+  DocumentData,
+} from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
 
 import { auth, db } from "firebase-config";
 import { LogIn, LogOut } from "components/Authentication";
 import CreateCommentForm from "components/CreateCommentForm";
 import RenderComment from "components/RenderComment";
+
+import processSnapshot from "utils/processSnapshot";
 
 import { IComment } from "interfaces";
 
@@ -61,18 +70,7 @@ function CommentSection() {
 
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
-      setComments(
-        snapshot.docs.map((doc) => ({
-          userId: doc.data().userId,
-          userName: doc.data().userName,
-          photo: doc.data().photo,
-          docId: doc.id,
-          body: doc.data().body,
-          createdAt: doc.data().createdAt?.toDate().toDateString(),
-          updatedAt: doc.data().updatedAt?.toDate().toDateString(),
-          replies: doc.data().replies,
-        }))
-      );
+      setComments(processSnapshot(snapshot));
     });
   }, []);
 
