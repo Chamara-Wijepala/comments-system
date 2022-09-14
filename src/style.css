@@ -21,6 +21,7 @@
 :root {
   --clr-primary: 0 0% 100%;
   --clr-secondary: 0 0% 98%;
+  --clr-accent-500: 18 100% 62%;
   --clr-accent-400: 0 100% 71%;
   --clr-accent-300: 171 44% 51%;
 
@@ -262,6 +263,10 @@ header {
   padding-top: 6px;
   margin-block: 1rem;
   border-radius: 8px;
+}
+
+.comment-container.current {
+  background-color: hsl(var(--clr-accent-500));
 }
 
 .comment-container.regular {

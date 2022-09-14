@@ -10,6 +10,7 @@ import {
   DocumentData,
   CollectionReference,
 } from "firebase/firestore";
+import clsx from "clsx";
 import { FaEdit } from "react-icons/fa";
 import { BsReplyFill } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
@@ -86,12 +87,13 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
   return (
     <div id={comment.docId}>
       <div
-        className={
-          "comment-container " +
-          (comment.userId === "t46mSh1qYHgS6gGvffLKF7jCeTI3"
+        className={clsx(
+          "comment-container",
+          comment.userId === auth.currentUser?.uid && "current",
+          comment.userId === "t46mSh1qYHgS6gGvffLKF7jCeTI3"
             ? "admin"
-            : "regular")
-        }
+            : "regular"
+        )}
       >
         <div className="comment">
           <div className="comment-info">
