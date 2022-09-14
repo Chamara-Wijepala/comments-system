@@ -11,11 +11,18 @@ import { BsReplyFill } from "react-icons/bs";
 import { auth } from "firebase-config";
 
 interface Props {
+  commentId: string;
+  userName: string;
   repliesColRef: CollectionReference<DocumentData>;
   setIsBeingRepliedTo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ReplyToCommentForm({ repliesColRef, setIsBeingRepliedTo }: Props) {
+function ReplyToCommentForm({
+  commentId,
+  userName,
+  repliesColRef,
+  setIsBeingRepliedTo,
+}: Props) {
   const [textInput, setTextInput] = useState("");
 
   const user = auth.currentUser;
@@ -28,6 +35,8 @@ function ReplyToCommentForm({ repliesColRef, setIsBeingRepliedTo }: Props) {
       userName: user?.displayName,
       photo: user?.photoURL,
       body: textInput,
+      commentRepliedTo: commentId,
+      userRepliedTo: userName,
       createdAt: serverTimestamp(),
     });
 

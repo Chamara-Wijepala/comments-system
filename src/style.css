@@ -201,7 +201,7 @@ textarea {
 
 .nested-component {
   display: grid;
-  grid-template-columns: min-content 1fr;
+  grid-template-columns: min-content minmax(0, 1fr);
 }
 
 .nested-component::before {
@@ -292,6 +292,14 @@ header {
 
 .comment-body {
   margin-block: 1rem;
+}
+
+.comment-body > a {
+  text-decoration: none;
+  color: hsl(var(--clr-accent-300));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .button-panel {

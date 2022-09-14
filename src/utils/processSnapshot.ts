@@ -17,6 +17,8 @@ function processSnapshot(snapshot: QuerySnapshot<DocumentData>) {
       createdAt: data.createdAt?.toDate().toDateString(),
       updatedAt: data.updatedAt?.toDate().toDateString(),
       replies: data.replies,
+      commentRepliedTo: data.commentRepliedTo,
+      userRepliedTo: data.userRepliedTo,
     });
   });
 

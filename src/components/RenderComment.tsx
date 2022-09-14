@@ -84,7 +84,7 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
   }
 
   return (
-    <div>
+    <div id={comment.docId}>
       <div
         className={
           "comment-container " +
@@ -114,7 +114,15 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
                 setIsBeingEdited={setIsBeingEdited}
               />
             ) : (
-              <p>{comment.body}</p>
+              <>
+                {comment.commentRepliedTo && (
+                  <a href={`#${comment.commentRepliedTo}`} className="fw-bold">
+                    {comment.userRepliedTo} <BsReplyFill />
+                  </a>
+                )}
+
+                <p>{comment.body}</p>
+              </>
             )}
           </div>
 
@@ -172,6 +180,8 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
       </div>
       {isBeingRepliedTo && (
         <ReplyToCommentForm
+          commentId={comment.docId}
+          userName={comment.userName}
           repliesColRef={repliesColRef}
           setIsBeingRepliedTo={setIsBeingRepliedTo}
         />

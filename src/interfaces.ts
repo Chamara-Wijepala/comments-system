@@ -6,6 +6,8 @@ export interface IComment {
   photo: string;
   docId: string;
   body: string;
+  commentRepliedTo?: string;
+  userRepliedTo?: string;
   createdAt: string;
   updatedAt?: string;
   replies?: CollectionReference;
