@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  QuerySnapshot,
-  DocumentData,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
 
 import { auth, db } from "firebase-config";
