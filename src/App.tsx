@@ -24,9 +24,13 @@ function App() {
   // wrapping the onAuthStateChanged in a useEffect will prevent user state
   // from being set twice
   useEffect(() => {
-    onAuthStateChanged(auth, (userObj) => {
+    const unsubscribe = onAuthStateChanged(auth, (userObj) => {
       setUser(userObj ? userObj : null);
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
