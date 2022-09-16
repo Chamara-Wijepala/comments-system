@@ -32,9 +32,13 @@ function RenderComment({ comment }: { comment: IComment }) {
   const q = query(repliesColRef, orderBy("createdAt"));
 
   useEffect(() => {
-    onSnapshot(q, (snapshot) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       setReplies(processSnapshot(snapshot));
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

@@ -69,9 +69,13 @@ function CommentSection() {
   const q = query(collection(db, "comments"), orderBy("createdAt"));
 
   useEffect(() => {
-    onSnapshot(q, (snapshot) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       setComments(processSnapshot(snapshot));
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
