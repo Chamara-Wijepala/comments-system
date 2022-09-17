@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   collection,
   doc,
+  getDocs,
   deleteDoc,
   query,
   onSnapshot,
@@ -80,10 +81,17 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isBeingRepliedTo, setIsBeingRepliedTo] = useState(false);
 
-  function handleDelete(commentDocRef: DocumentReference<DocumentData>) {
+  // handles deleting comments with all their replies and also deleting individual replies
+  async function handleDelete(commentDocRef: DocumentReference<DocumentData>) {
+    const snapshot = await getDocs(query(repliesColRef));
+
     const result = confirm("Are you sure you want to delete this comment?");
 
     if (result) {
+      snapshot.forEach((reply) => {
+        deleteDoc(doc(db, "comments", comment.docId, "replies", reply.id));
+      });
+
       deleteDoc(commentDocRef);
     }
   }
