@@ -11,4 +11,5 @@ export interface IComment {
   createdAt: string;
   updatedAt?: string;
   replies?: CollectionReference;
+  ratings: CollectionReference;
 }

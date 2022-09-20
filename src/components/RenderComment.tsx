@@ -18,6 +18,7 @@ import { AiFillDelete } from "react-icons/ai";
 
 import UpdateCommentForm from "./UpdateCommentForm";
 import ReplyToCommentForm from "./ReplyToCommentForm";
+import CommentRating from "./CommentRating";
 
 import { db, auth } from "firebase-config";
 import processSnapshot from "utils/processSnapshot";
@@ -81,17 +82,30 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isBeingRepliedTo, setIsBeingRepliedTo] = useState(false);
 
-  // handles deleting comments with all their replies and also deleting individual replies
-  async function handleDelete(commentDocRef: DocumentReference<DocumentData>) {
-    const snapshot = await getDocs(query(repliesColRef));
+  async function deleteReplies() {
+    const repliesSnapshot = await getDocs(query(repliesColRef));
 
+    repliesSnapshot.forEach((reply) => {
+      deleteDoc(doc(db, "comments", comment.docId, "replies", reply.id));
+    });
+  }
+
+  async function deleteRatings() {
+    const ratingsSnapshot = await getDocs(
+      query(collection(db, "comments", comment.docId, "ratings"))
+    );
+
+    ratingsSnapshot.forEach((rating) => {
+      deleteDoc(doc(db, "comments", comment.docId, "ratings", rating.id));
+    });
+  }
+
+  async function handleDelete(commentDocRef: DocumentReference<DocumentData>) {
     const result = confirm("Are you sure you want to delete this comment?");
 
     if (result) {
-      snapshot.forEach((reply) => {
-        deleteDoc(doc(db, "comments", comment.docId, "replies", reply.id));
-      });
-
+      deleteReplies();
+      deleteRatings();
       deleteDoc(commentDocRef);
     }
   }
@@ -118,6 +132,8 @@ function Comment({ comment, commentDocRef, repliesColRef }: CommentProps) {
                 ? `Edited ${comment.updatedAt}`
                 : comment.createdAt}
             </span>
+
+            <CommentRating comment={comment} />
           </div>
 
           <div className="comment-body">
