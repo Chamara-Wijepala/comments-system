@@ -40,7 +40,13 @@ function App() {
         <article className="article">
           <h2>Article Header</h2>
 
-          <img src={image} alt="top down view of sailboat on shallow water" />
+          <div className="image-wrapper">
+            <img src={image} alt="top down view of sailboat on shallow water" />
+            <span>
+              Photo from{" "}
+              <a href="https://unsplash.com/photos/ahjzDFIcXuE">Unsplash</a>
+            </span>
+          </div>
 
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
@@ -63,6 +69,20 @@ function App() {
 
         <CommentSection />
       </main>
+
+      <footer>
+        <div className="container container-lg">
+          <span>
+            <a target="_blank" href="https://icons8.com/icon/42791/comments">
+              Comments
+            </a>{" "}
+            icon by{" "}
+            <a target="_blank" href="https://icons8.com">
+              Icons8
+            </a>
+          </span>
+        </div>
+      </footer>
     </>
   );
 }
