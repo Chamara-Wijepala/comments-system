@@ -9,6 +9,8 @@ import RenderComment from "components/RenderComment";
 
 import processSnapshot from "utils/processSnapshot";
 
+import image from "assets/images/quentin-menini-ahjzDFIcXuE-unsplash.jpg";
+
 import { IComment } from "interfaces";
 
 function App() {
@@ -35,8 +37,11 @@ function App() {
       </header>
 
       <main className="container container-md">
-        <article>
+        <article className="article">
           <h2>Article Header</h2>
+
+          <img src={image} alt="top down view of sailboat on shallow water" />
+
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
             autem porro adipisci atque ut quis explicabo eum facilis minus hic,

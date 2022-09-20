@@ -252,6 +252,28 @@ header {
   gap: 1rem;
 }
 
+/* article */
+
+.article {
+  display: flex;
+  flex-direction: column;
+}
+
+.article > * {
+  margin-block: 1rem;
+}
+
+.article > h2 {
+  color: hsl(var(--clr-accent-300));
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.article > img {
+  align-self: center;
+  border-radius: 10px;
+}
+
 /* create comment form */
 
 .create-comment-form-wrapper {
