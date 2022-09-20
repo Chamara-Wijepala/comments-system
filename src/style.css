@@ -210,6 +210,11 @@ textarea {
   border: 1px solid hsl(0 0% 0% / 0.2);
 }
 
+hr {
+  border: 0;
+  border: 1px solid hsl(0 0% 0% / 0.2);
+}
+
 .profile-picture {
   max-width: 2rem;
   border-radius: 50%;
@@ -278,6 +283,7 @@ header {
 
 .create-comment-form-wrapper {
   padding-inline: 0;
+  margin-block: 2rem;
 }
 
 @media (min-width: 35em) {

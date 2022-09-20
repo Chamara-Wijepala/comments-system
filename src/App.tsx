@@ -59,6 +59,8 @@ function App() {
 
         <CreateCommentForm />
 
+        <hr />
+
         <CommentSection />
       </main>
     </>
